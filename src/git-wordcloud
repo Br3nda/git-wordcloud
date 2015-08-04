@@ -6,7 +6,7 @@ import argparse
 
 
 parser = argparse.ArgumentParser(description='wordcloud from git history.')
-parser.add_argument('-o', '--output-filename', nargs='1', help='Where to write file')
+parser.add_argument('-o', '--output-filename', help='Where to write file')
 # parser.add_argument('-a', '--authors', nargs='0', help='Cloud of authors')
 # parser.add_argument('-m', '--messages', help='Cloud of commit messages')
 
@@ -19,21 +19,20 @@ repo = Repo(working_dir)
 assert not repo.bare
 
 messages = ''
-# authors = ''
+authors = ''
 for l in repo.iter_commits():
 
-  # name = l.actor.name.replace(' ', '')
-  # authors += str(name) +' '
+  name = l.author.name.replace(' ', '')
+  authors += str(name) +' '
 
   messages += l.message
-  print l.message
+  #print l.message
 
 
 
 wordcloud = WordCloud().generate(messages)
+#wordcloud = WordCloud().generate(authors)
 wordcloud.to_file(args.output_filename)
 
-
-# wordcloud = WordCloud().generate(authors)
-# wordcloud.to_file('/tmp/git-authors.png')
+print "File written to {filename}".format(filename=args.output_filename)
 
