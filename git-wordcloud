@@ -2,6 +2,17 @@
 import os
 from git import Repo
 from wordcloud import WordCloud
+import argparse
+
+
+parser = argparse.ArgumentParser(description='wordcloud from git history.')
+parser.add_argument('-o', '--output-filename', nargs='1', help='Where to write file')
+# parser.add_argument('-a', '--authors', nargs='0', help='Cloud of authors')
+# parser.add_argument('-m', '--messages', help='Cloud of commit messages')
+
+args = parser.parse_args()
+# parser.print_help()
+
 
 working_dir = os.getcwd()
 repo = Repo(working_dir)
@@ -20,7 +31,7 @@ for l in repo.iter_commits():
 
 
 wordcloud = WordCloud().generate(messages)
-wordcloud.to_file('/tmp/git-messages.png')
+wordcloud.to_file(args.output_filename)
 
 
 # wordcloud = WordCloud().generate(authors)
